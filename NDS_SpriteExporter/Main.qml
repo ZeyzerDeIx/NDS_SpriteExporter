@@ -8,111 +8,90 @@ Window {
     width: 640
     height: 480
     visible: true
+    visibility: Window.AutomaticVisibility
     title: qsTr("Hello World")
+
+    // --- LOGIC & DIALOGS ---
 
     FileDialog {
         id: fileDialog
         title: "Please choose a file"
         nameFilters: ["Image files (*.png *.bmp)"]
-
-        // Log the selected file path
         onAccepted: {
-            spriteSheetImage.source = fileDialog.selectedFile;
+            if(backend.checkFileValidity(fileDialog.selectedFile))
+                imageContainer.source = fileDialog.selectedFile;
         }
     }
 
+    // --- UI STRUCTURE ---
 
     DropArea {
         id: dropArea
-        x: 0
-        y: 280
         anchors.fill: parent
+
         onEntered: (drop) => {
             if(!drop.hasUrls || !backend.checkFileValidity(drop.urls[0]))
-                invalideFileTypeRect.visible = true;
-            else valideFileTypeRect.visible = true;
+                invalidOverlay.visible = true;
+            else
+                validOverlay.visible = true;
         }
         onExited: {
-            invalideFileTypeRect.visible = false;
-            valideFileTypeRect.visible = false;
+            invalidOverlay.visible = false;
+            validOverlay.visible = false;
         }
-
         onDropped: (drop) => {
-            invalideFileTypeRect.visible = false;
-            valideFileTypeRect.visible = false;
+            invalidOverlay.visible = false;
+            validOverlay.visible = false;
             if (drop.hasUrls && backend.checkFileValidity(drop.urls[0]))
-                spriteSheetImage.source = drop.urls[0];
+                imageContainer.source = drop.urls[0];
         }
 
-        Button {
-            id: importSpriteSheetButton
-            text: qsTr("Import a spritesheet")
+        RowLayout {
             anchors.fill: parent
-            anchors.leftMargin: 44
-            anchors.rightMargin: 344
-            anchors.topMargin: 145
-            anchors.bottomMargin: 299
-            highlighted: false
-            flat: false
-            onClicked: fileDialog.open()
-        }
+            spacing: 0
 
-        Rectangle {
-            id: spriteSheetImageRect
-            color: "#ffffff"
-            radius: 20
-            border.width: 4
-            anchors.fill: parent
-            anchors.leftMargin: 328
-            anchors.rightMargin: 42
-            anchors.topMargin: 29
-            anchors.bottomMargin: 183
+            // --- LEFT SIDE ---
+            Frame {
+                Layout.fillHeight: true
+                Layout.fillWidth: true
+                Layout.preferredWidth: 1
 
-            Image {
-                id: spriteSheetImage
-                anchors.fill: parent
-                anchors.leftMargin: 7
-                anchors.rightMargin: 7
-                anchors.topMargin: 7
-                anchors.bottomMargin: 7
-                source: "qrc:/qtquickplugin/images/template_image.png"
-                fillMode: Image.PreserveAspectFit
+                // English comment: Using our custom component
+                ScalableButton {
+                    anchors.centerIn: parent
+                    width: parent.width / 2
+                    height: parent.height / 5
+                    text: qsTr("Import spritesheet")
+                    onClicked: fileDialog.open()
+                }
+            }
+
+            // --- RIGHT SIDE ---
+            Frame {
+                Layout.fillHeight: true
+                Layout.fillWidth: true
+                Layout.preferredWidth: 1
+
+                // English comment: Using our custom component
+                SquareImageContainer {
+                    id: imageContainer
+                    // Logic is handled inside the component file
+                }
             }
         }
     }
 
+    // --- OVERLAYS ---
 
-
-    Rectangle {
-        id: invalideFileTypeRect
-        visible: false
-        color: "#ff0000"
-        anchors.fill: parent
-
-        Text {
-            id: invalideFileTypeText
-            color: "#ffffff"
-            text: qsTr("Invalide file type!")
-            anchors.fill: parent
-            font.pixelSize: 44
-            horizontalAlignment: Text.AlignHCenter
-            verticalAlignment: Text.AlignVCenter
-        }
+    StatusOverlay {
+        id: invalidOverlay
+        color: "#ccff0000" // Red transparent
+        message: qsTr("Invalid file type!")
     }
 
-    Rectangle {
-        id: valideFileTypeRect
-        visible: false
-        color: "#00ff31"
-        anchors.fill: parent
-        Text {
-            id: valideFileTypeText
-            color: "#ffffff"
-            text: qsTr("Valide file type")
-            anchors.fill: parent
-            font.pixelSize: 44
-            horizontalAlignment: Text.AlignHCenter
-            verticalAlignment: Text.AlignVCenter
-        }
+    StatusOverlay {
+        id: validOverlay
+        color: "#cc00ff31" // Green transparent
+        message: qsTr("Valid file type")
     }
 }
