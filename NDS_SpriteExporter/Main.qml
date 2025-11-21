@@ -3,6 +3,8 @@ import QtQuick.Layouts 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Dialogs
 
+import "QmlComponents"
+
 Window {
     id: mainWindow
     width: 640
@@ -51,10 +53,7 @@ Window {
             spacing: 0
 
             // --- LEFT SIDE ---
-            Frame {
-                Layout.fillHeight: true
-                Layout.fillWidth: true
-                Layout.preferredWidth: 1
+            NeutralContainer {
 
                 // English comment: Using our custom component
                 ScalableButton {
@@ -67,10 +66,7 @@ Window {
             }
 
             // --- RIGHT SIDE ---
-            Frame {
-                Layout.fillHeight: true
-                Layout.fillWidth: true
-                Layout.preferredWidth: 1
+            NeutralContainer {
 
                 // English comment: Using our custom component
                 SquareImageContainer {
