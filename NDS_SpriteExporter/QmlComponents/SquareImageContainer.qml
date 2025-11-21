@@ -4,7 +4,7 @@ Rectangle {
     id: root
     color: "transparent"
     radius: 20
-    border.color: "#004d99"
+    border.color: internalImage.source.toString() !== "" ? "#3399ff" : "#004d99"
     border.width: 3
 
     // Property alias to allow outside access to the image source
@@ -25,7 +25,6 @@ Rectangle {
         anchors.rightMargin: 10
         anchors.topMargin: 10
         anchors.bottomMargin: 10
-        source: "qrc:/qtquickplugin/images/template_image.png" // Default
         fillMode: Image.PreserveAspectFit
     }
 }

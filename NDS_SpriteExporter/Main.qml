@@ -30,36 +30,55 @@ Window {
 
     CustomDropArea {
         onDroppedExternal: (drop) => {
-            if (drop.hasUrls && backend.checkFileValidity(drop.urls[0]))
-                imageContainer.source = drop.urls[0];
-        }
+                               if (drop.hasUrls && backend.checkFileValidity(drop.urls[0]))
+                               imageContainer.source = drop.urls[0];
+                           }
 
         RowLayout {
             anchors.fill: parent
-            spacing: 0
 
             // --- LEFT SIDE ---
             NeutralContainer {
 
-                // English comment: Using our custom component
-                ScalableButton {
-                    anchors.centerIn: parent
-                    width: parent.width / 2
-                    height: parent.height / 5
-                    text: qsTr("Import spritesheet")
-                    onClicked: fileDialog.open()
+                ColumnLayout {
+                    anchors.fill: parent
+                    NeutralContainer{
+
+                    }
+                    NeutralContainer{
+
+                    }
                 }
             }
 
             // --- RIGHT SIDE ---
             NeutralContainer {
+                ColumnLayout {
+                    anchors.fill: parent
+                    Spacer{}
+                    NeutralContainer {
+                        weigh: 1
+                        ScalableButton {
+                            x: 79
+                            y: 95
+                            anchors.centerIn: parent
+                            width: parent.width * 0.75
+                            height: parent.height * 0.65
+                            text: qsTr("Import spritesheet")
+                            onClicked: fileDialog.open()
+                        }
+                    }
 
-                // English comment: Using our custom component
-                SquareImageContainer {
-                    id: imageContainer
-                    // Logic is handled inside the component file
+                    NeutralContainer {
+                        weigh: 6
+                        SquareImageContainer {
+                            id: imageContainer
+                        }
+                    }
                 }
             }
+
+
         }
     }
 }
