@@ -22,6 +22,7 @@ qt_add_qml_module(appNDS_SpriteExporter
         SOURCES AppConstants.h
         QML_FILES QmlComponents/ScalableButton.qml QmlComponents/SquareImageContainer.qml QmlComponents/StatusOverlay.qml
         QML_FILES QmlComponents/NeutralContainer.qml
+        QML_FILES QmlComponents/CustomDropArea.qml
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.

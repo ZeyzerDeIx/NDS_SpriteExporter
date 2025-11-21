@@ -2,9 +2,10 @@ import QtQuick
 
 Rectangle {
     id: root
-    color: "#ffffff"
+    color: "transparent"
     radius: 20
-    border.width: 4
+    border.color: "#004d99"
+    border.width: 3
 
     // Property alias to allow outside access to the image source
     property alias source: internalImage.source
@@ -20,6 +21,10 @@ Rectangle {
         id: internalImage
         anchors.fill: parent
         anchors.margins: 10
+        anchors.leftMargin: 10
+        anchors.rightMargin: 10
+        anchors.topMargin: 10
+        anchors.bottomMargin: 10
         source: "qrc:/qtquickplugin/images/template_image.png" // Default
         fillMode: Image.PreserveAspectFit
     }

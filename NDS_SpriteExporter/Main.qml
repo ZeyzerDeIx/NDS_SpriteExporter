@@ -1,6 +1,6 @@
 import QtQuick
-import QtQuick.Layouts 2.15
-import QtQuick.Controls 2.15
+import QtQuick.Layouts
+import QtQuick.Controls
 import QtQuick.Dialogs
 
 import "QmlComponents"
@@ -10,6 +10,7 @@ Window {
     width: 640
     height: 480
     visible: true
+    color: "#1b1b1b"
     visibility: Window.AutomaticVisibility
     title: qsTr("Hello World")
 
@@ -27,23 +28,8 @@ Window {
 
     // --- UI STRUCTURE ---
 
-    DropArea {
-        id: dropArea
-        anchors.fill: parent
-
-        onEntered: (drop) => {
-            if(!drop.hasUrls || !backend.checkFileValidity(drop.urls[0]))
-                invalidOverlay.visible = true;
-            else
-                validOverlay.visible = true;
-        }
-        onExited: {
-            invalidOverlay.visible = false;
-            validOverlay.visible = false;
-        }
-        onDropped: (drop) => {
-            invalidOverlay.visible = false;
-            validOverlay.visible = false;
+    CustomDropArea {
+        onDroppedExternal: (drop) => {
             if (drop.hasUrls && backend.checkFileValidity(drop.urls[0]))
                 imageContainer.source = drop.urls[0];
         }
@@ -75,19 +61,5 @@ Window {
                 }
             }
         }
-    }
-
-    // --- OVERLAYS ---
-
-    StatusOverlay {
-        id: invalidOverlay
-        color: "#ccff0000" // Red transparent
-        message: qsTr("Invalid file type!")
-    }
-
-    StatusOverlay {
-        id: validOverlay
-        color: "#cc00ff31" // Green transparent
-        message: qsTr("Valid file type")
     }
 }
