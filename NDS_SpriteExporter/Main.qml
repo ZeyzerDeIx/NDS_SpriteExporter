@@ -38,8 +38,7 @@ Window {
             // --- LEFT SIDE ---
             NeutralContainer {
 
-                ColumnLayout {
-                    anchors.fill: parent
+                CustomColLay {
                     NeutralContainer{
 
                     }
