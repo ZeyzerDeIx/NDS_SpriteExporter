@@ -13,28 +13,35 @@ NeutralContainer {
     width: parent.width * parentProportions.x
     height: parent.height * parentProportions.y
 
-    CustomRowLay {
-        // --- PROPORTIONAL SPACING ---
-        spacing: root.width * 0.02
+    // CHANGED: Switched to Column Layout (Vertical)
+    CustomColLay {
+        anchors.fill: parent
 
-        // --- LEFT SECTION : LABEL ---
+        // --- PROPORTIONAL SPACING ---
+        spacing: root.height * 0.05
+
+        // --- TOP SECTION : LABEL ---
         NeutralContainer {
-            weigh: 1
             Label {
                 id: label
                 anchors.fill: parent
+                anchors.leftMargin: width * 0.02
                 text: qsTr("Label")
-                verticalAlignment: Text.AlignVCenter
-                horizontalAlignment: Text.AlignRight
-                font.pixelSize: height * 0.4
+
+                // Align bottom-left is standard for labels above inputs
+                verticalAlignment: Text.AlignBottom
+                horizontalAlignment: Text.AlignLeft
+
+                // Adjust font size calculation for the new container height
+                font.pixelSize: height * 0.8
                 fontSizeMode: Text.Fit
-                color: "white"
+                color: field.focus || field.hovered ? "white" : "#808080"
             }
         }
 
-        // --- RIGHT SECTION : INPUT ---
+        // --- BOTTOM SECTION : INPUT ---
         NeutralContainer {
-            weigh: 3.5
+            weigh: 2
 
             ScalableTextField {
                 id: field

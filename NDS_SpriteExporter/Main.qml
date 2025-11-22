@@ -29,7 +29,7 @@ Window {
                     NeutralContainer{
                         LabeledScalableTextField{
                             labelText: qsTr("Sprite name")
-                            parentProportions: Qt.point(0.95,0.15)
+                            parentProportions: Qt.point(0.95,0.2)
                         }
                     }
                     NeutralContainer{
