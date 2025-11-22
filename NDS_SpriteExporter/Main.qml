@@ -12,22 +12,9 @@ Window {
     visible: true
     color: "#1b1b1b"
     visibility: Window.AutomaticVisibility
-    title: qsTr("Hello World")
-
-    // --- LOGIC & DIALOGS ---
-
-    FileDialog {
-        id: fileDialog
-        title: "Please choose a file"
-        nameFilters: ["Image files (*.png *.bmp)"]
-        onAccepted: {
-            if(backend.checkFileValidity(fileDialog.selectedFile))
-                imageContainer.source = fileDialog.selectedFile;
-        }
-    }
+    title: qsTr("Zeyzer's NDS Sprite Exporter")
 
     // --- UI STRUCTURE ---
-
     CustomDropArea {
         onDropped: (drop) => {
            if (drop.hasUrls && backend.checkFileValidity(drop.urls[0]))
@@ -53,10 +40,10 @@ Window {
                 CustomColLay {
                     Spacer{}
                     NeutralContainer {
-                        ScalableButton {
+                        FilePickerButton {
+                            linkedImageContainer: imageContainer
                             parentProportions: Qt.point(0.75,0.65)
                             text: qsTr("Import spritesheet")
-                            onClicked: fileDialog.open()
                         }
                     }
 
