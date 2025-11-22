@@ -29,14 +29,12 @@ Window {
     // --- UI STRUCTURE ---
 
     CustomDropArea {
-        onDroppedExternal: (drop) => {
-                               if (drop.hasUrls && backend.checkFileValidity(drop.urls[0]))
-                               imageContainer.source = drop.urls[0];
-                           }
+        onDropped: (drop) => {
+           if (drop.hasUrls && backend.checkFileValidity(drop.urls[0]))
+           imageContainer.source = drop.urls[0];
+       }
 
-        RowLayout {
-            anchors.fill: parent
-
+        CustomRowLay {
             // --- LEFT SIDE ---
             NeutralContainer {
 
@@ -53,17 +51,11 @@ Window {
 
             // --- RIGHT SIDE ---
             NeutralContainer {
-                ColumnLayout {
-                    anchors.fill: parent
+                CustomColLay {
                     Spacer{}
                     NeutralContainer {
-                        weigh: 1
                         ScalableButton {
-                            x: 79
-                            y: 95
-                            anchors.centerIn: parent
-                            width: parent.width * 0.75
-                            height: parent.height * 0.65
+                            parentProportions: Qt.point(0.75,0.65)
                             text: qsTr("Import spritesheet")
                             onClicked: fileDialog.open()
                         }

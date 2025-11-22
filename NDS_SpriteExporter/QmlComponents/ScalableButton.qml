@@ -14,8 +14,15 @@ ToolButton {
     property color borderColor: "#004d99"
     property color hoverBorderColor: "#3399ff"
     property color textColor: "white"
+    property point parentProportions: Qt.point(0.5, 0.5)
 
 
+    // --- CENTERED IN PARENT ---
+    anchors.centerIn: parent
+
+    // --- ENSURE SCALABILITY ---
+    width: parent.width * parentProportions.x
+    height: parent.height * parentProportions.y
 
     // --- ENSURE FONT RESIZE ---
     onWidthChanged: Qt.callLater(resize)

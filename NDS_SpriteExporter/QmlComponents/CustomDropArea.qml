@@ -4,7 +4,7 @@ Item {
     anchors.fill: parent
     id: root
 
-    property alias onDroppedExternal: dropArea.onDroppedExternal
+    property alias onDropped: dropArea.onDroppedExternal
 
     DropArea {
         id: dropArea
