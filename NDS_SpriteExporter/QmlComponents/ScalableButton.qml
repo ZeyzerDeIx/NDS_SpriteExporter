@@ -9,12 +9,13 @@ ToolButton {
         font.pixelSize: 20
         text: root.text
     }
-    property color bgColor: "#4d4d4d"
+    property color bgColor: "#272541"
     property color hoverBgColor: "#004d99"
+    property color pressedBgColor: "#0066cc"
     property color borderColor: "#004d99"
     property color hoverBorderColor: "#3399ff"
     property color textColor: "white"
-    property point parentProportions: Qt.point(0.5, 0.5)
+    property point parentProportions: Qt.point(0.5, 0.15)
 
 
     // --- CENTERED IN PARENT ---
@@ -43,8 +44,14 @@ ToolButton {
         radius: 8
         border.width: 2
 
-        border.color: root.hovered ? root.hoverBorderColor : root.borderColor
-        color: root.hovered ? root.hoverBgColor : root.bgColor
+        border.color: root.hovered || root.focus ?
+                          root.hoverBorderColor :
+                          root.borderColor
+        color: root.pressed ?
+                root.pressedBgColor :
+                root.hovered || root.focus ?
+                   root.hoverBgColor :
+                   root.bgColor
     }
 
     // --- FONT COLOR CHANGE ---
