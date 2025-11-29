@@ -13,6 +13,8 @@ Rectangle {
     // Logic: Calculate size based on the smallest dimension of the parent
     property real sideLength: Math.min(parent.width, parent.height) - 50
 
+    signal imageLoaded()
+
     width: sideLength
     height: sideLength
     anchors.centerIn: parent
@@ -26,5 +28,6 @@ Rectangle {
         anchors.topMargin: 10
         anchors.bottomMargin: 10
         fillMode: Image.PreserveAspectFit
+        onSourceChanged: imageLoaded()
     }
 }

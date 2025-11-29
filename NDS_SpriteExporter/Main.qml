@@ -51,9 +51,6 @@ Window {
                             linkedImageContainer: imageContainer
                             parentProportions: Qt.point(0.75,0.65)
                             text: qsTr("Import spritesheet")
-                            onImageLoaded: {
-                                spriteName.inputText = backend.extractFileName(imageContainer.source);
-                            }
                         }
                     }
 
@@ -61,6 +58,9 @@ Window {
                         weigh: 6
                         SquareImageContainer {
                             id: imageContainer
+                            onImageLoaded: {
+                                spriteName.inputText = backend.extractFileName(imageContainer.source);
+                            }
                         }
                     }
                 }
