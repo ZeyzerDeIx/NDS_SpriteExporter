@@ -36,7 +36,14 @@ Window {
                     NeutralContainer{
                         ScalableButton{
                             text: qsTr("Export")
-                            onClicked: backend.exportSprite(imageContainer.source, spriteName.inputText);
+                            onClicked: {
+                                backend.exportSprite(
+                                    imageContainer.source,
+                                    spriteName.inputText,
+                                    assetsFolderPicker.folderPath,
+                                    nitrofsFolderPicker.folderPath
+                                );
+                            }
                         }
                     }
                 }
@@ -45,21 +52,43 @@ Window {
             // --- RIGHT SIDE ---
             NeutralContainer {
                 CustomColLay {
-                    Spacer{}
                     NeutralContainer {
-                        FilePickerButton {
-                            linkedImageContainer: imageContainer
+                        FolderPicker{
+                            id: assetsFolderPicker
                             parentProportions: Qt.point(0.75,0.65)
-                            text: qsTr("Import spritesheet")
+                            text: qsTr("Select assets folder")
                         }
                     }
 
                     NeutralContainer {
-                        weigh: 6
-                        SquareImageContainer {
-                            id: imageContainer
-                            onImageLoaded: {
-                                spriteName.inputText = backend.extractFileName(imageContainer.source);
+                        FolderPicker{
+                            id: nitrofsFolderPicker
+                            parentProportions: Qt.point(0.75,0.65)
+                            text: qsTr("Select nitrofs folder")
+                        }
+                    }
+
+                    NeutralContainer {
+                        weigh: 7
+                        CustomColLay {
+                            Spacer{}
+
+                            NeutralContainer {
+                                FilePickerButton {
+                                    linkedImageContainer: imageContainer
+                                    parentProportions: Qt.point(0.75,0.65)
+                                    text: qsTr("Import spritesheet")
+                                }
+                            }
+
+                            NeutralContainer {
+                                weigh: 6
+                                SquareImageContainer {
+                                    id: imageContainer
+                                    onImageLoaded: {
+                                        spriteName.inputText = backend.extractFileName(imageContainer.source);
+                                    }
+                                }
                             }
                         }
                     }

@@ -4,6 +4,8 @@
 #include <QFileInfo>
 #include <QProcess>
 #include <QDebug>
+#include <QDir>
+#include <QCoreApplication>
 
 void Backend::changeTitle(QObject *windowObject, const QString &newTitle) const
 {
@@ -29,30 +31,89 @@ bool Backend::checkFileValidity(const QUrl path) const
     else return false;
 }
 
-bool Backend::exportSprite(QString const& imagePath, QString const& spriteName) const
+bool Backend::exportSprite(QString const& imagePath, QString const& spriteName, QString const& assetsFolderPath, QString const& nitrofsFolderPath) const
 {
-    QProcess gritProcess;
-    QString program = "Thirdparty/grit.exe";
+    // 1. CLEAN PATHS: Convert URL (file:///...) to OS native paths (C:/...)
+    // This handles spaces, special chars, and OS separators automatically.
+    QString const cleanImagePath = QUrl(imagePath).toLocalFile();
+    QString const cleanAssetsPath = QUrl(assetsFolderPath).toLocalFile();
+    QString const cleanNitroPath = QUrl(nitrofsFolderPath).toLocalFile();
+    QString const appDir = QCoreApplication::applicationDirPath();
 
-    QString const finalName = spriteName + (spriteName.endsWith("Sprite") ? "" : "Sprite");
+    // 2. SETUP NAMES
+    QString const finalFileName = spriteName + (spriteName.endsWith("Sprite") ? "" : "Sprite");
+
+    // Absolute path to the tool
+    QString const program = appDir + "/Thirdparty/grit.exe";
+
+    QProcess gritProcess;
+
+    // 3. Set where GRIT runs. All outputs will appear here.
+    gritProcess.setWorkingDirectory(appDir);
 
     QStringList arguments;
     arguments
-        << imagePath.mid(8) //mid(8) to ignore "file//:"
-        << "-ftb"           //require binary files
-        << "-gB4"           //require 16 colors palette
-        << "-gT 7D197D"     //transparency color
-        << "-s "+finalName  //created variables name
-        << "-o "+finalName  //created files name
-        << "-Mh8"           //frame heigh in tiles (1 tile = 8 pixels)
-        << "-Mw4";          //frame width in tiles (1 tile = 8 pixels)
+        << cleanImagePath        // Input file (absolute path)
+        << "-ftb"                // Binary output
+        << "-gB4"                // 4bpp
+        << "-gT" << "7D197D"     // Transparent color
+        << "-s" << finalFileName // Output symbol names
+        << "-o" << finalFileName // Output files name
+        << "-Mh8"                // Frame heigh in tiles (1 tile = 8 pixels)
+        << "-Mw4";               // Frame width in tiles (1 tile = 8 pixels)
 
     gritProcess.start(program, arguments);
 
-    if (gritProcess.waitForFinished()) qDebug() << "Success";
-    else qDebug() << "Error:" << gritProcess.errorString();
+    // 4. WAIT & CHECK ERRORS
+    if (!gritProcess.waitForFinished())
+    {
+        qDebug() << "GRIT process - Error:" << gritProcess.errorString();
+        return false;
+    }
 
-    return true;
+    // Capture GRIT output (errors are often printed to Standard Error)
+    QByteArray errorOutput = gritProcess.readAllStandardError();
+    QByteArray stdOutput = gritProcess.readAllStandardOutput();
+
+    if (gritProcess.exitCode() != 0 || !errorOutput.isEmpty())
+    {
+        qDebug() << "GRIT Failed!";
+        qDebug() << "StdOut:" << stdOutput;
+        qDebug() << "StdErr:" << errorOutput;
+        return false;
+    }
+
+    // 5. MOVE FILES
+    auto moveWithOverwrite = [](QString const& source, QString const& dest)
+    {
+        // Debug check
+        if (!QFile::exists(source))
+        {
+            qDebug() << "Source missing:" << source;
+            return false;
+        }
+
+        if (QFile::exists(dest) && !QFile::remove(dest))
+        {
+            qDebug() << "Cannot remove existing file:" << dest;
+            return false;
+        }
+
+        bool success = QFile::rename(source, dest);
+        if (!success) qDebug() << "Rename failed:" << source << "to" << dest;
+        return success;
+    };
+
+    // Construct source paths (appDir + filename + extension)
+    QString const srcHeader = appDir + "/" + finalFileName + ".h";
+    QString const srcImg    = appDir + "/" + finalFileName + ".img.bin";
+    QString const srcPal    = appDir + "/" + finalFileName + ".pal.bin";
+
+    bool hMoved   = moveWithOverwrite(srcHeader, cleanAssetsPath + "/" + finalFileName + ".h");
+    bool imgMoved = moveWithOverwrite(srcImg,    cleanNitroPath  + "/" + finalFileName + ".img.bin");
+    bool palMoved = moveWithOverwrite(srcPal,    cleanNitroPath  + "/" + finalFileName + ".pal.bin");
+
+    return hMoved && imgMoved && palMoved;
 }
 
 QString Backend::extractFileName(QString const& imagePath) const

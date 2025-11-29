@@ -29,6 +29,7 @@ qt_add_qml_module(appNDS_SpriteExporter
         QML_FILES QmlComponents/FilePickerButton.qml
         QML_FILES QmlComponents/ScalableTextField.qml
         QML_FILES QmlComponents/LabeledScalableTextField.qml
+        QML_FILES QmlComponents/FolderPicker.qml
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.

@@ -5,7 +5,7 @@ ScalableButton {
     id: root
     property SquareImageContainer linkedImageContainer
 
-    text: qsTr("Import spritesheet")
+    text: qsTr("Import image")
     onClicked: fileDialog.open()
 
     FileDialog {
