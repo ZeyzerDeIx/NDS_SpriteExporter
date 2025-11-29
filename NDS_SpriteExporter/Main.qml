@@ -19,7 +19,7 @@ Window {
         onDropped: (drop) => {
            if (drop.hasUrls && backend.checkFileValidity(drop.urls[0]))
            imageContainer.source = drop.urls[0];
-       }
+        }
 
         CustomRowLay {
             // --- LEFT SIDE ---
@@ -28,12 +28,16 @@ Window {
                 CustomColLay {
                     NeutralContainer{
                         LabeledScalableTextField{
+                            id: spriteName
                             labelText: qsTr("Sprite name")
                             parentProportions: Qt.point(0.95,0.2)
                         }
                     }
                     NeutralContainer{
-
+                        ScalableButton{
+                            text: qsTr("Export")
+                            onClicked: backend.exportSprite(imageContainer.source, spriteName.inputText);
+                        }
                     }
                 }
             }
@@ -47,6 +51,9 @@ Window {
                             linkedImageContainer: imageContainer
                             parentProportions: Qt.point(0.75,0.65)
                             text: qsTr("Import spritesheet")
+                            onImageLoaded: {
+                                spriteName.inputText = backend.extractFileName(imageContainer.source);
+                            }
                         }
                     }
 
@@ -58,8 +65,6 @@ Window {
                     }
                 }
             }
-
-
         }
     }
 }
