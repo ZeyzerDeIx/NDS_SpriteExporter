@@ -28,41 +28,33 @@ Window {
                 CustomColLay {
                     Spacer{}
                     NeutralContainer {
+                        weigh: 14
+                        ImagePicker {
+                            id: imagePicker
+                            onImageAccepted: {
+                                spriteName.inputText = backend.extractFileName(imagePicker.source);
+                                rightSideHalf.visible = true;
+                            }
+                        }
+                    }
+                    Spacer{}
+                    NeutralContainer {
+                        weigh: 2
                         FolderPicker{
                             id: assetsFolderPicker
-                            parentProportions: Qt.point(0.75,0.65)
+                            parentProportions: Qt.point(0.9,0.65)
                             text: qsTr("Select assets folder")
                         }
                     }
                     NeutralContainer {
+                        weigh: 2
                         FolderPicker{
                             id: nitrofsFolderPicker
-                            parentProportions: Qt.point(0.75,0.65)
+                            parentProportions: Qt.point(0.9,0.65)
                             text: qsTr("Select nitrofs folder")
                         }
                     }
-                    NeutralContainer {
-                        weigh: 7
-                        CustomColLay {
-                            NeutralContainer {
-                                FilePickerButton {
-                                    linkedImageContainer: imageContainer
-                                    parentProportions: Qt.point(0.75,0.65)
-                                    text: qsTr("Import spritesheet")
-                                }
-                            }
-                            NeutralContainer {
-                                weigh: 6
-                                SquareImageContainer {
-                                    id: imageContainer
-                                    onImageLoaded: {
-                                        spriteName.inputText = backend.extractFileName(imageContainer.source);
-                                        rightSideHalf.visible = true;
-                                    }
-                                }
-                            }
-                        }
-                    }
+                    Spacer{}
                 }
             }
 
@@ -99,7 +91,7 @@ Window {
                             parentProportions:  Qt.point(0.95,0.6)
                             onClicked: {
                                 backend.exportSprite(
-                                    imageContainer.source,
+                                    imagePicker.source,
                                     spriteName.inputText,
                                     assetsFolderPicker.folderPath,
                                     nitrofsFolderPicker.folderPath

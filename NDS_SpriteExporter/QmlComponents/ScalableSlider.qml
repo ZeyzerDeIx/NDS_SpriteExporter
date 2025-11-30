@@ -26,7 +26,7 @@ Slider {
 
     // Range setup (example)
     from: 1
-    to: 1
+    to: 10
     value: 1
 
     // --- CENTERED IN PARENT ---
@@ -59,13 +59,13 @@ Slider {
         width: root.availableWidth
         height: root.height * 0.5 // Groove is thinner than the handle
         radius: height / 3
-        color: root.hovered ? root.hoverGrooveColor : root.grooveColor
+        color: root.hovered || root.focus ? root.hoverGrooveColor : root.grooveColor
 
         // Optional: Filled part of the slider
         Rectangle {
             width: root.visualPosition * parent.width
             height: parent.height
-            color: root.hovered ? root.hoverFilledGrooveColor : root.filledGrooveColor
+            color: root.hovered || root.focus ? root.hoverFilledGrooveColor : root.filledGrooveColor
             radius: height / 3
         }
     }
@@ -77,8 +77,8 @@ Slider {
         width: root.height
         height: root.height
         radius: height / 5
-        color: root.pressed ? Qt.lighter(root.hoverHandleColor, 1.2) : root.hovered ? root.hoverHandleColor : root.handleColor
-        border.color: root.hovered ? root.hoverHandleBorderColor : root.handleBorderColor
+        color: root.pressed ? Qt.lighter(root.hoverHandleColor, 1.2) : root.hovered || root.focus ? root.hoverHandleColor : root.handleColor
+        border.color: root.hovered || root.focus ? root.hoverHandleBorderColor : root.handleBorderColor
         border.width: 2
 
         // Value Text inside the handle

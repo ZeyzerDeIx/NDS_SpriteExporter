@@ -43,7 +43,7 @@ NeutralContainer {
                 fontSizeMode: Text.Fit
 
                 // Highlight label when slider is active
-                color: slider.pressed || slider.hovered ? "white" : "#808080"
+                color: slider.pressed || slider.hovered || slider.focus ? "white" : "#808080"
             }
         }
 

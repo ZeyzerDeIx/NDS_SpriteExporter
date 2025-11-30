@@ -32,6 +32,7 @@ qt_add_qml_module(appNDS_SpriteExporter
         QML_FILES QmlComponents/FolderPicker.qml
         QML_FILES QmlComponents/ScalableSlider.qml
         QML_FILES QmlComponents/LabeledScalableSlider.qml
+        QML_FILES QmlComponents/ImagePicker.qml
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.

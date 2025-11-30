@@ -7,6 +7,8 @@ ScalableButton {
 
     text: qsTr("Import image")
     onClicked: fileDialog.open()
+    onFocusChanged: root.linkedImageContainer.selected = focus || hovered
+    onHoveredChanged: root.linkedImageContainer.selected = focus || hovered
 
     FileDialog {
         id: fileDialog
@@ -16,6 +18,7 @@ ScalableButton {
             if(backend.checkFileValidity(fileDialog.selectedFile))
             {
                 root.linkedImageContainer.source = fileDialog.selectedFile;
+                root.linkedImageContainer.visible = true;
             }
         }
     }
