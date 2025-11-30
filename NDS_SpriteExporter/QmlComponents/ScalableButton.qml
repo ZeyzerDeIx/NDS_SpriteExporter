@@ -11,7 +11,6 @@ ToolButton {
     }
     property color bgColor: "#272541"
     property color hoverBgColor: "#004d99"
-    property color pressedBgColor: "#0066cc"
     property color borderColor: "#004d99"
     property color hoverBorderColor: "#3399ff"
     property color textColor: "white"
@@ -48,7 +47,7 @@ ToolButton {
                           root.hoverBorderColor :
                           root.borderColor
         color: root.pressed ?
-                root.pressedBgColor :
+                Qt.lighter(root.hoverBgColor, 1.2) :
                 root.hovered || root.focus ?
                    root.hoverBgColor :
                    root.bgColor

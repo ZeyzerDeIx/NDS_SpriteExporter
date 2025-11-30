@@ -24,18 +24,79 @@ Window {
         CustomRowLay {
             // --- LEFT SIDE ---
             NeutralContainer {
-
+                weigh: 2
                 CustomColLay {
-                    NeutralContainer{
-                        LabeledScalableTextField{
-                            id: spriteName
-                            labelText: qsTr("Sprite name")
-                            parentProportions: Qt.point(0.95,0.2)
+                    Spacer{}
+                    NeutralContainer {
+                        FolderPicker{
+                            id: assetsFolderPicker
+                            parentProportions: Qt.point(0.75,0.65)
+                            text: qsTr("Select assets folder")
                         }
                     }
-                    NeutralContainer{
-                        ScalableButton{
+                    NeutralContainer {
+                        FolderPicker{
+                            id: nitrofsFolderPicker
+                            parentProportions: Qt.point(0.75,0.65)
+                            text: qsTr("Select nitrofs folder")
+                        }
+                    }
+                    NeutralContainer {
+                        weigh: 7
+                        CustomColLay {
+                            NeutralContainer {
+                                FilePickerButton {
+                                    linkedImageContainer: imageContainer
+                                    parentProportions: Qt.point(0.75,0.65)
+                                    text: qsTr("Import spritesheet")
+                                }
+                            }
+                            NeutralContainer {
+                                weigh: 6
+                                SquareImageContainer {
+                                    id: imageContainer
+                                    onImageLoaded: {
+                                        spriteName.inputText = backend.extractFileName(imageContainer.source);
+                                        rightSideHalf.visible = true;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            // --- RIGHT SIDE ---
+            NeutralContainer {
+                id: rightSideHalf
+                visible: false
+                weigh: 3
+                CustomColLay {
+                    Spacer{}
+                    NeutralContainer {
+                        LabeledScalableTextField {
+                            id: spriteName
+                            labelText: qsTr("Sprite name")
+                            parentProportions: Qt.point(0.95,0.8)
+                        }
+                    }
+                    NeutralContainer {
+                        LabeledScalableSlider{
+                            labelText: qsTr("Number of frames (W)")
+                            parentProportions:  Qt.point(0.95,0.8)
+                        }
+                    }
+                    NeutralContainer {
+                        LabeledScalableSlider{
+                            labelText: qsTr("Number of states (H)")
+                            parentProportions:  Qt.point(0.95,0.8)
+                        }
+                    }
+                    Spacer{}
+                    NeutralContainer {
+                        ScalableButton {
                             text: qsTr("Export")
+                            parentProportions:  Qt.point(0.95,0.6)
                             onClicked: {
                                 backend.exportSprite(
                                     imageContainer.source,
@@ -46,52 +107,7 @@ Window {
                             }
                         }
                     }
-                }
-            }
-
-            // --- RIGHT SIDE ---
-            NeutralContainer {
-                CustomColLay {
-                    NeutralContainer {
-                        FolderPicker{
-                            id: assetsFolderPicker
-                            parentProportions: Qt.point(0.75,0.65)
-                            text: qsTr("Select assets folder")
-                        }
-                    }
-
-                    NeutralContainer {
-                        FolderPicker{
-                            id: nitrofsFolderPicker
-                            parentProportions: Qt.point(0.75,0.65)
-                            text: qsTr("Select nitrofs folder")
-                        }
-                    }
-
-                    NeutralContainer {
-                        weigh: 7
-                        CustomColLay {
-                            Spacer{}
-
-                            NeutralContainer {
-                                FilePickerButton {
-                                    linkedImageContainer: imageContainer
-                                    parentProportions: Qt.point(0.75,0.65)
-                                    text: qsTr("Import spritesheet")
-                                }
-                            }
-
-                            NeutralContainer {
-                                weigh: 6
-                                SquareImageContainer {
-                                    id: imageContainer
-                                    onImageLoaded: {
-                                        spriteName.inputText = backend.extractFileName(imageContainer.source);
-                                    }
-                                }
-                            }
-                        }
-                    }
+                    Spacer{}
                 }
             }
         }
